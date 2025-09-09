@@ -1,0 +1,37 @@
+import React, { use } from 'react'
+import { Route, Routes } from 'react-router-dom'
+import Login from './pages/Login'
+import Feed from './pages/Feed'
+import Messages from './pages/messages'
+import ChatBox from './pages/ChatBox'
+import Connections from './pages/connections'
+import Discover from './pages/discover'
+import Profile from './pages/profile'
+import CreatePost from './pages/createPost'
+import {useUser} from '@clerk/clerk-react'
+import Layout from './pages/layout'
+import {Toaster} from 'react-hot-toast'
+
+const App = () => {
+  const {user} =useUser()
+  return (
+    <>
+    <Toaster />
+    <Routes>
+      <Route path='/' element={!user?<Login/>:<Layout/>}>
+        <Route index element={<Feed/>}/>
+        <Route path='messages' element={<Messages/>}/>
+        <Route path='messages/:userId' element={<ChatBox/>}/>
+        <Route path='connections' element={<Connections/>}/>
+        <Route path='discover' element={<Discover/>}/>
+        <Route path='profile' element={<Profile/>}/>
+        <Route path='profile/:profileId' element={<Profile/>}/>
+        <Route path='create-post' element={<CreatePost/>}/>
+      </Route>
+    </Routes>
+      
+    </>
+  )
+}
+
+export default App
