@@ -15,7 +15,7 @@ import { useDispatch } from "react-redux"
 import { fetchUser } from "./features/user/userSlice"
 import { addMessage } from "./features/messages/messagesSlice"
 import { fetchConnections } from "./features/connections/connectionSlice"
-import ChatBox from "./pages/Chatbox"
+import ChatBox from "./pages/ChatBox"
 import Notification from "./components/Notification"
 
 const App = () => {
