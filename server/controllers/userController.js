@@ -139,7 +139,7 @@ export const unfollowUser=async(req,res)=>{
 
         const toUser=await User.findById(id)
         toUser.followers=user.followers.filter(user=>user!== userId);
-        await user.save()
+        await toUser.save()
 
         res.json({success:true,message:"You are no longer following this user"})
        
@@ -193,6 +193,7 @@ export const getUserConnections= async(req,res)=>{
         const user=await User.findById(userId).populate('connections followers following')
         const followers=user.followers
         const following=user.following
+        const connections = user.connections; 
         const pendingConnections=(await Connection.find({to_user_id:userId,status:'pending'}).populate('from_user_id')).map(connection=>connection.from_user_id)
         res.json({success:true,connections,followers,following,pendingConnections})
     }catch(error){
@@ -239,3 +240,19 @@ export const getUserProfiles= async(req,res)=>{
         res.json({success:false,message:error.message})
     }
 }
+
+export const getUserById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await User.findById(id).select('-password'); // exclude sensitive fields
+
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
+
+    res.json({ success: true, user });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
